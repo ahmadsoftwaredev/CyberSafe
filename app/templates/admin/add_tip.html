@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Security Tip | CyberSafe</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <div class="tool-card mx-auto">
+
+        <h2>Add Security Article</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+                <label class="form-label">Article Title</label>
+                <input type="text"
+                       name="title"
+                       class="form-control"
+                       maxlength="200"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+
+                <select name="category" class="form-select" required>
+                    <option value="">Select Category</option>
+                    <option value="Phishing">Phishing</option>
+                    <option value="Password Security">Password Security</option>
+                    <option value="Two-Factor Authentication">Two-Factor Authentication</option>
+                    <option value="Malware">Malware</option>
+                    <option value="Social Engineering">Social Engineering</option>
+                    <option value="Online Privacy">Online Privacy</option>
+                    <option value="Safe Browsing">Safe Browsing</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Article Content</label>
+                <textarea name="content"
+                          class="form-control"
+                          rows="8"
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom w-100">
+                Save Article
+            </button>
+
+        </form>
+
+        <a href="{{ url_for('tips.admin_tips') }}"
+           class="btn btn-outline-info mt-3 w-100">
+            Back to Manage Tips
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

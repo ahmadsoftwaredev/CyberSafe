@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CyberSafe</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('main.home') }}">
+            CyberSafe
+        </a>
+
+        <form method="POST" action="{{ url_for('auth.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-info">
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- Dashboard Main Section -->
+    <div class="dashboard-card">
+
+        <span class="section-tag">USER DASHBOARD</span>
+
+        <h1 class="mt-3">Welcome, {{ user.username }}!</h1>
+
+        <p class="text-secondary mt-3">
+            Your CyberSafe account is ready.
+            Start learning how to protect yourself online.
+        </p>
+
+        <div class="row g-3 mt-4">
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h4>Password Checker</h4>
+                    <p>Learn to create stronger passwords.</p>
+
+                    <a href="{{ url_for('tools.password_checker') }}"
+                       class="btn btn-primary-custom mt-3">
+                        Open Password Checker
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h4>URL Checker</h4>
+                    <p>Check URLs for suspicious indicators.</p>
+
+                    <a href="{{ url_for('tools.url_checker') }}"
+                       class="btn btn-primary-custom mt-3">
+                        Open URL Checker
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+    <div class="feature-card">
+        <h4>Cyber Quiz</h4>
+        <p>Test your cybersecurity knowledge.</p>
+
+        <a href="{{ url_for('quiz.available_quizzes') }}"
+           class="btn btn-primary-custom mt-2">
+            Explore Quizzes
+        </a>
+
+        <a href="{{ url_for('quiz.quiz_history') }}"
+           class="btn btn-outline-info mt-2">
+            Quiz History
+        </a>
+    </div>
+</div>
+
+    <!-- Cybersecurity Learning Center -->
+    <section class="mt-5">
+
+        <h3>Cybersecurity Learning Center</h3>
+
+        <p class="text-secondary mt-2">
+            Explore cybersecurity articles and improve your online safety knowledge.
+        </p>
+
+        <a href="{{ url_for('tips.list_tips') }}"
+           class="btn btn-primary-custom mt-2">
+            Explore Security Tips
+        </a>
+
+        {% if current_user.role == "admin" %}
+
+            <a href="{{ url_for('tips.admin_tips') }}"
+               class="btn btn-outline-info mt-2">
+                Manage Security Articles
+            </a>
+
+            <a href="{{ url_for('quiz.admin_quizzes') }}"
+               class="btn btn-outline-info mt-2">
+                Manage Cyber Quizzes
+            </a>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+</body>
+</html>
